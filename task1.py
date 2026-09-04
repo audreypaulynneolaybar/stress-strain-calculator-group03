@@ -6,7 +6,7 @@ def get_valid_float_input(prompt):
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
-#in is put ng va is lues
+#input values
 force = get_valid_float_input("Enter applied force in Newtons: ")
 area = get_valid_float_input("Enter cross-sectional area in square meters: ")
 original_length = get_valid_float_input("Enter original length in meters: ")
