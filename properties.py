@@ -5,14 +5,27 @@ from abc import ABC, abstractmethod
 # Immutable system constants
 UNITS = ("N", "m²", "m", "Pa")
 
-# --- DATACLASSES FOR MATERIAL PROPERTIES ---
+
+# --- DATACLASS FOR DATABASE DICTIONARY ITEMS ---
+
+@dataclass
+class MaterialData:
+    """Structure used by database.py to represent predefined material records."""
+    name: str
+    category: str
+    density_kg_m3: float
+    yield_strength_Pa: float
+    ultimate_strength_Pa: float
+
+
+# --- DATACLASSES FOR OOP MATERIAL HIERARCHY ---
 
 @dataclass
 class Material(ABC):
     name: str
     density: float
-    yield_strength: float
-    ultimate_strength: float
+    yield_strength_Pa: float
+    ultimate_strength_Pa: float
 
     @abstractmethod
     def material_category(self) -> str:
