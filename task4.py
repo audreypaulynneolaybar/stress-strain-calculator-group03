@@ -24,6 +24,7 @@ def get_positive_float(prompt):
             print("Invalid number.")
 
 def select_material():
+    print("--- Raw Material Stress and Strain Analysis Calculator ---")
     print("1. Steel | 2. Aluminum | 3. Copper | 4. Custom")
     choice = input("Select (1-4): ")
     if choice in ("1", "2", "3"):
