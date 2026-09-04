@@ -1,0 +1,87 @@
+{
+    "timestamp": "2026-09-04T10:33:54.312387",
+    "summary": {
+        "total_tests": 5,
+        "unique_materials_count": 3,
+        "unique_materials_list": [
+            "Structural Steel",
+            "Aluminum 6061-T6",
+            "Titanium Grade 5"
+        ],
+        "avg_stress_Pa": 17026086.034189582,
+        "max_stress_Pa": 53967078.808784954,
+        "min_stress_Pa": 5000000.0
+    },
+    "records": [
+        {
+            "timestamp": "2026-09-04T10:33:04.873803",
+            "material": "Titanium Grade 5",
+            "category": "Metallic material",
+            "force_N": 92095.74314883564,
+            "area_m2": 0.001706517106014713,
+            "original_length_m": 0.5144175477854835,
+            "delta_length_m": 0.00379126671219022,
+            "stress_Pa": 53967078.808784954,
+            "strain": 0.007370018243956193,
+            "youngs_modulus_Pa": 7322516311.684958,
+            "factor_of_safety": 16.30623742148427,
+            "safe": true
+        },
+        {
+            "timestamp": "2026-09-04T10:33:04.873831",
+            "material": "Structural Steel",
+            "category": "Metallic material",
+            "force_N": 15266.644304534751,
+            "area_m2": 0.0029708706204861976,
+            "original_length_m": 2.753751500389388,
+            "delta_length_m": 0.0018396776165775076,
+            "stress_Pa": 5138777.905460013,
+            "strain": 0.0006680623201902467,
+            "youngs_modulus_Pa": 7692063674.533572,
+            "factor_of_safety": 48.64969932527576,
+            "safe": true
+        },
+        {
+            "timestamp": "2026-09-04T10:33:04.873839",
+            "material": "Aluminum 6061-T6",
+            "category": "Metallic material",
+            "force_N": 38912.32715104496,
+            "area_m2": 0.002428290977989699,
+            "original_length_m": 0.6075705944857905,
+            "delta_length_m": 0.0007309255257730989,
+            "stress_Pa": 16024573.456702946,
+            "strain": 0.0012030297917754037,
+            "youngs_modulus_Pa": 13320180070.565208,
+            "factor_of_safety": 17.223547369028502,
+            "safe": true
+        },
+        {
+            "timestamp": "2026-09-04T10:33:32.566889",
+            "material": "Structural Steel",
+            "category": "Metallic material",
+            "force_N": 50000.0,
+            "area_m2": 0.01,
+            "original_length_m": 10.0,
+            "delta_length_m": 0.005,
+            "stress_Pa": 5000000.0,
+            "strain": 0.0005,
+            "youngs_modulus_Pa": 10000000000.0,
+            "factor_of_safety": 50.0,
+            "safe": true
+        },
+        {
+            "timestamp": "2026-09-04T10:33:52.267917",
+            "material": "Aluminum 6061-T6",
+            "category": "Metallic material",
+            "force_N": 10000.0,
+            "area_m2": 0.002,
+            "original_length_m": 1.0,
+            "delta_length_m": 0.0015,
+            "stress_Pa": 5000000.0,
+            "strain": 0.0015,
+            "youngs_modulus_Pa": 3333333333.3333335,
+            "factor_of_safety": 55.2,
+            "safe": true
+        }
+    ]
+}
