@@ -1,0 +1,135 @@
+# task3_data_structures.py
+
+# Tuples for immutable measurement units
+UNITS = ("N", "m²", "m", "Pa")
+
+# Set to track unique materials tested across the session
+unique_materials_tested = set()
+
+# List to serve as our sequential test history ledger
+test_history = []
+
+# Predefined materials database dictionary
+MATERIALS_DB = {
+    "Steel": {"yield_strength": 250e6, "youngs_modulus": 200e9},
+    "Aluminum": {"yield_strength": 276e6, "youngs_modulus": 69e9},
+    "Titanium": {"yield_strength": 880e6, "youngs_modulus": 110e9},
+}
+
+def get_positive_float(prompt):
+    """Helper function to validate positive floating-point inputs."""
+    while True:
+        try:
+            val = float(input(prompt))
+            if val <= 0:
+                print("Error: Value must be greater than zero. Please try again.")
+                continue
+            return val
+        except ValueError:
+            print("Error: Invalid input. Please enter a valid numeric value.")
+
+def run_test_session():
+    print("=== Stress and Strain Calculator - Session Manager ===")
+    
+    while True:
+        print("\nAvailable Predefined Materials:", ", ".join(MATERIALS_DB.keys()))
+        mat_input = input("Enter material name (or type 'Custom' for custom material, 'quit' to exit): ").strip().title()
+        
+        if mat_input.lower() in ["quit", "summary", "exit"]:
+            break
+
+        if not mat_input:
+            print("Error: Material name cannot be empty.")
+            continue
+
+        # Material selection & Predefined / Custom handling (Task 2 integration)
+        if mat_input in MATERIALS_DB:
+            selected_material = mat_input
+            yield_strength = MATERIALS_DB[selected_material]["yield_strength"]
+        else:
+            selected_material = mat_input
+            print(f"'{selected_material}' is not in the predefined database.")
+            yield_strength = get_positive_float(f"Enter Yield Strength for {selected_material} ({UNITS[3]}): ")
+
+        try:
+            # Input collection with validation
+            force = float(input(f"Enter Applied Force ({UNITS[0]}): "))
+            area = get_positive_float(f"Enter Cross-Sectional Area ({UNITS[1]}): ")
+            orig_len = get_positive_float(f"Enter Original Length ({UNITS[2]}): ")
+            delta_len = float(input(f"Enter Change in Length ({UNITS[2]}): "))
+
+            # Perform stress, strain, and safety calculations (Task 1 & Task 2)
+            stress = force / area
+            strain = delta_len / orig_len
+            youngs = stress / strain if strain != 0 else float('inf')
+            
+            fos = yield_strength / stress if stress > 0 else float('inf')
+            is_safe = fos >= 1.0
+
+            # Store in Data Structures (Task 3)
+            unique_materials_tested.add(selected_material)
+
+            test_num = len(test_history) + 1
+            record = {
+                "test_id": test_num,
+                "material": selected_material,
+                "force_N": force,
+                "area_m2": area,
+                "original_length_m": orig_len,
+                "delta_length_m": delta_len,
+                "stress_Pa": stress,
+                "strain": strain,
+                "youngs_modulus_Pa": youngs,
+                "yield_strength_Pa": yield_strength,
+                "factor_of_safety": fos,
+                "is_safe": is_safe
+            }
+            test_history.append(record)
+
+            # Display immediate test summary
+            print(f"\n--- Result [Test #{test_num}: {selected_material}] ---")
+            print(f"Calculated Stress: {stress:,.2f} {UNITS[3]}")
+            print(f"Calculated Strain: {strain:.6f}")
+            print(f"Factor of Safety:  {fos:.2f} ({'SAFE' if is_safe else 'UNSAFE / FAILED'})")
+
+        except ValueError:
+            print("Error: Invalid numeric input provided. Test skipped.")
+        except ZeroDivisionError:
+            print("Error: Area and original length cannot be zero.")
+
+def display_session_summary():
+    if not test_history:
+        print("\nNo test data recorded during this session.")
+        return
+
+    print("\n================ SESSION SUMMARY ================")
+    print(f"Total Tests Executed:    {len(test_history)}")
+    print(f"Unique Materials Tested: {', '.join(unique_materials_tested)}")
+
+    print("\n--- Detailed Calculation History ---")
+    for rec in test_history:
+        status = "SAFE" if rec["is_safe"] else "UNSAFE"
+        print(f"Test #{rec['test_id']} [{rec['material']}]: "
+              f"Stress = {rec['stress_Pa']:,.2f} Pa, "
+              f"Strain = {rec['strain']:.6f}, "
+              f"FoS = {rec['factor_of_safety']:.2f} ({status})")
+
+    # Statistical Analysis across session
+    stresses = [t["stress_Pa"] for t in test_history]
+    strains = [t["strain"] for t in test_history]
+    
+    max_stress_rec = max(test_history, key=lambda x: x["stress_Pa"])
+    min_fos_rec = min(test_history, key=lambda x: x["factor_of_safety"])
+    avg_strain = sum(strains) / len(strains)
+    failed_count = sum(1 for t in test_history if not t["is_safe"])
+
+    print("\n--- Statistical Analysis ---")
+    print(f"Highest Stress:          {max_stress_rec['stress_Pa']:,.2f} Pa ({max_stress_rec['material']}, Test #{max_stress_rec['test_id']})")
+    print(f"Lowest Factor of Safety: {min_fos_rec['factor_of_safety']:.2f} ({min_fos_rec['material']}, Test #{min_fos_rec['test_id']})")
+    print(f"Average System Strain:   {avg_strain:.6f}")
+    print(f"Safety Check Failures:   {failed_count}")
+    print("=================================================")
+
+if __name__ == "__main__":
+    run_test_session()
+    display_session_summary()
