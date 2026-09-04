@@ -37,3 +37,25 @@ while True:
     else:
         print("Invalid selection. Please choose between 1 and 5.")
         continue
+        
+     # Input gathering with strict validation
+    force = get_positive_float("Enter applied force (N): ")
+    area = get_positive_float("Enter cross-sectional area (m²): ")
+    length = get_positive_float("Enter original length (m): ")
+    delta_length = get_positive_float("Enter change in length (m): ")
+
+    stress = force / area
+    strain = delta_length / length
+    factor_of_safety = yield_strength / stress
+
+    print(f"\nResults for {mat_name}:")
+    print(f"Calculated Stress: {stress:,.2f} Pa")
+    print(f"Factor of Safety:  {factor_of_safety:.2f}")
+
+    # Safety decision boundary
+    if factor_of_safety < 1.0:
+        print("WARNING: Material failure predicted! (FoS < 1.0)")
+    elif factor_of_safety < 1.5:
+        print("CAUTION: Low safety margin. Redesign recommended.")
+    else:
+        print("STATUS: Design is structurally safe under applied loads.")        
