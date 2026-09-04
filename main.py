@@ -213,7 +213,7 @@ def main():
 
     # File exports using datetime timestamps
     if session.history:
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     csv_file = OUTPUT_DIR / f"session_{timestamp}.csv"
     json_file = OUTPUT_DIR / f"session_{timestamp}.json"
