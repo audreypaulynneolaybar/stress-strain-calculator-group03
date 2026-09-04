@@ -4,7 +4,7 @@ MATERIALS = {"Steel": 250e6, "Aluminum": 70e6, "Copper": 70e6}
 def calculate_stress(force, area):
     return force / area
 
-def calculate_strain(change_in_length, original_length):
+def calculate_strain(original_length, change_in_length):
     return change_in_length / original_length
 
 def calculate_youngs_modulus(stress, strain):
