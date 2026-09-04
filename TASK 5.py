@@ -139,12 +139,7 @@ class StressStrainTest:
         )
 
 
-# ==========================================
-# 3. Test Analysis System
-# ==========================================
-
 class MaterialTestAnalyzer:
-    """Manager class to aggregate, compare, and report test runs."""
 
     def __init__(self, tests: Optional[List[StressStrainTest]] = None):
         self.tests: List[StressStrainTest] = tests if tests is not None else []
@@ -179,9 +174,6 @@ class MaterialTestAnalyzer:
         return "\n".join(lines)
 
 
-# ==========================================
-# 4. Execution Example
-# ==========================================
 
 if __name__ == "__main__":
     # Define Materials
