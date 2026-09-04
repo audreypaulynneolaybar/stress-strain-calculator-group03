@@ -133,6 +133,26 @@ def save_session_json(session: TestSession, filepath: Path) -> None:
     except IOError as err:
         print(f"[ERROR] Failed to save JSON file: {err}")
 
+def load_session_json(filepath: Path):
+    """Loads a previously saved test session from a JSON file."""
+    try:
+        with open(filepath, mode="r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        print(f"[JSON LOADING] Loaded data from: {filepath.resolve()}")
+        return data
+
+    except FileNotFoundError:
+        print("[ERROR] JSON file not found.")
+        return None
+
+    except json.JSONDecodeError:
+        print("[ERROR] The JSON file is invalid or corrupted.")
+        return None
+
+    except IOError as err:
+        print(f"[ERROR] Failed to load JSON file: {err}")
+        return None
 
 def main():
     session = TestSession()
@@ -193,13 +213,18 @@ def main():
 
     # File exports using datetime timestamps
     if session.history:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        export_session_csv(session, OUTPUT_DIR / f"session_{timestamp}.csv")
-        save_session_json(session, OUTPUT_DIR / f"session_{timestamp}.json")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    # Goodbye message on normal exit
-    print("\nThank you for using the Stress & Strain Analysis System. Goodbye!")
+    csv_file = OUTPUT_DIR / f"session_{timestamp}.csv"
+    json_file = OUTPUT_DIR / f"session_{timestamp}.json"
 
+    export_session_csv(session, csv_file)
+    save_session_json(session, json_file)
+    loaded_data = load_session_json(json_file)
+
+    if loaded_data is not None:
+        print("[JSON LOADING] File loaded successfully.")
+        print(f"Loaded records: {len(loaded_data['records'])}")
 
 if __name__ == "__main__":
     main()
