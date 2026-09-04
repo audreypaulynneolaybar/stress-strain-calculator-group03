@@ -5,15 +5,26 @@ import random
 from datetime import datetime
 from pathlib import Path
 
-# Fixed imports to match your project files
+# Fixed imports: Added Metal to allow concrete object instantiation
 from database import get_all_materials, get_material_by_key, add_custom_material
-from properties import Material
+from properties import Metal, Material
 from test import StressStrainTest, TestSession
 import utils
 
 # Output directory path setup
 OUTPUT_DIR = Path("output_data")
 OUTPUT_DIR.mkdir(exist_ok=True)
+
+
+def get_yes_no_choice(prompt: str) -> bool:
+    """Prompts the user repeatedly until a valid 'y' or 'n' is entered."""
+    while True:
+        choice = input(prompt).strip().lower()
+        if choice in ('y', 'yes'):
+            return True
+        elif choice in ('n', 'no'):
+            return False
+        print("Invalid input. Please enter 'y' for yes or 'n' for no.")
 
 
 def select_material() -> Material:
@@ -44,7 +55,8 @@ def select_material() -> Material:
     ult_str = utils.get_positive_float("Ultimate Strength (Pa): ")
     density = utils.get_positive_float("Density (kg/m³): ")
 
-    custom_mat = Material(
+    # Instantiating the concrete Metal subclass instead of abstract Material
+    custom_mat = Metal(
         name=custom_name,
         density=density,
         yield_strength_Pa=yield_str,
@@ -126,10 +138,13 @@ def main():
     session = TestSession()
     print("=== Raw Material Stress & Strain Analysis System ===")
 
-    # Optional initial data simulation
-    sim_choice = input("Generate simulated test data first? (y/n): ").strip().lower()
-    if sim_choice == 'y':
-        run_simulated_tests(session, count=3)
+    # If the user says 'n' right away, exit directly with goodbye
+    if not get_yes_no_choice("Generate simulated test data first? (y/n): "):
+        print("\nThank you for using the Stress & Strain Analysis System. Goodbye!")
+        return
+
+    # If they said 'y', generate simulated tests
+    run_simulated_tests(session, count=3)
 
     # Interactive test execution loop
     while True:
@@ -163,7 +178,8 @@ def main():
         except ValueError as err:
             print(f"\n[ERROR] Invalid parameters: {err}")
 
-        if input("\nRun another test? (y/n): ").strip().lower() != 'y':
+        # Input validation loop for running another test
+        if not get_yes_no_choice("\nRun another test? (y/n): "):
             break
 
     # Final summary output
@@ -180,6 +196,9 @@ def main():
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         export_session_csv(session, OUTPUT_DIR / f"session_{timestamp}.csv")
         save_session_json(session, OUTPUT_DIR / f"session_{timestamp}.json")
+
+    # Goodbye message on normal exit
+    print("\nThank you for using the Stress & Strain Analysis System. Goodbye!")
 
 
 if __name__ == "__main__":

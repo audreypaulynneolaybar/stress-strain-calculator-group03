@@ -1,7 +1,8 @@
-# stress_calculator/test.py
+# test.py
 from datetime import datetime
 from typing import List, Dict, Any, Optional
-from material import Material
+from properties import Material
+
 
 class StressStrainTest:
     def __init__(
@@ -80,10 +81,15 @@ class StressStrainTest:
     # --- Serialization Helper ---
     def to_dict(self) -> Dict[str, Any]:
         """Converts test instance data into a dictionary for JSON/CSV exports."""
+        if hasattr(self.material, 'material_category'):
+            cat = self.material.material_category()
+        else:
+            cat = getattr(self.material, 'category', 'General Material')
+
         return {
             "timestamp": self.timestamp.isoformat(),
             "material": self.material.name,
-            "category": self.material.material_category(),
+            "category": cat,
             "force_N": self.force_N,
             "area_m2": self.area_m2,
             "original_length_m": self.original_length_m,
