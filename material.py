@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 class Material (ABC):
     name: str
     density: float
-    yeild_strength: float
+    yield_strength: float
     ultimate_strength: float
 
     @abstractmethod

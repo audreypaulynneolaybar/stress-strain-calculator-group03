@@ -1,7 +1,7 @@
 # test.py
 from datetime import datetime
 from typing import List, Dict, Any, Optional
-from properties import Material
+from material import Material
 
 
 class StressStrainTest:
